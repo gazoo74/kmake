@@ -27,4 +27,48 @@ kmake_flags=( "-I$KMINCDIR/" "-f$KMINCDIR/kmakefile" )
 KMFLAGS="${kmake_flags[*]}"
 export KMAKE KMFLAGS KMINCDIR
 
+usage() {
+	cat <<EOF
+Usage: ${0##*/} [OPTIONS] [TARGETS...] [VARIABLES...]
+
+Runs on top of make(1) using a set of Makefiles to extends Kbuild features with
+the build of an tiny rootfs and an additional Qemu target to emulate the linux
+kernel alongside a userland.
+
+The userland is a tiny InitRAMFS cpio archive based on busybox(1) that contains
+many common UNIX utilities into a single small executable.
+
+For a more thorough description of *make(1)*, please refers to its help.
+
+Options:
+      -h or --help              Print usage.
+
+Targets:
+
+      busybox                 Compile a static version of busybox(1).
+      initramfs.cpio          Create the InitRAMFS cpio archive to used with the
+                              kernel image.
+      runqemu                 Run the kernel image and userland rootfs in
+                              qemu(1).
+
+Variables:
+
+QEMUFLAGS                     Additional flags given to system qemu.
+CMDLINE                       Set the kernel command-line.
+EOF
+}
+
+parse_arguments() {
+	while [ "$#" -ne 0 ]; do
+		if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+			usage
+			exit 0
+		fi
+		shift
+	done
+}
+
+# Intercept -h/--help option
+parse_arguments "$@"
+
 exec make "${kmake_flags[@]}" "$@"

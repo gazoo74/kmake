@@ -24,6 +24,9 @@ DESTDIR ?=
 .PHONY: all
 all:
 
+.PHONY: doc
+doc: kmake.1.gz
+
 .PHONY: install
 install:
 	install -d $(DESTDIR)$(PREFIX)/bin/
@@ -33,6 +36,11 @@ install:
 	install -d $(DESTDIR)$(PREFIX)/share/kmake/
 	install -m 644 kmakefile *.mk inittab rcS \
 	           $(DESTDIR)$(PREFIX)/share/kmake/
+
+.PHONY: install-doc
+install-doc:
+	install -d $(DESTDIR)$(PREFIX)/share/man/man1/
+	install -m 644 kmake.1.gz $(DESTDIR)$(PREFIX)/share/man/man1/
 
 .PHONY: install-bash-completion
 install-bash-completion:
@@ -47,6 +55,7 @@ install-bash-completion:
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/kmake
+	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/kmake.1.gz
 	completionsdir=$$(pkg-config --define-variable=prefix=$(PREFIX) \
 	                             --variable=completionsdir \
 	                             bash-completion); \
@@ -54,7 +63,7 @@ uninstall:
 		rm -f $(DESTDIR)$$completionsdir/kmake; \
 	fi
 
-user-install user-install-bash-completion user-uninstall:
+user-install user-install-doc user-install-bash-completion user-uninstall:
 user-%:
 	$(MAKE) $* PREFIX=$$HOME/.local
 
@@ -68,9 +77,19 @@ linux_download:
 check: kmake
 	shellcheck $^
 
+.PHONY: clean
+clean:
+	rm -f kmake.1.gz
+
 .PHONY: mrproper
-mrproper:
+mrproper: clean
 	rm -f linux
 	rm -Rf linux-*/
+
+%.1: %.1.adoc
+	asciidoctor -b manpage -o $@ $<
+
+%.gz: %
+	gzip -c $^ >$@
 
 # ex: filetype=makefile

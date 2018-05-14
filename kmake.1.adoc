@@ -1,0 +1,101 @@
+= kmake(1)
+:doctype: manpage
+:author: Gaël PORTAY
+:email: gael.portay@savoirfairelinux.com
+:lang: en
+:man manual: kmake Manual
+:man source: kmake
+
+== NAME
+
+kmake - maintain kernel dependencies by extending Kbuild features
+
+== SYNOPSIS
+
+*kmake* [OPTIONS] [TARGETS...] [VARIABLES...]
+
+== DESCRIPTION
+
+Runs on top of *make(1)* using a set of _Makefiles_ to extends _Kbuild_ features
+with the build of an tiny _rootfs_ and an additional _Qemu_ target to emulate
+the _linux kernel_ alongside a _userland_.
+
+The _userland_ is a tiny *InitRAMFS* _cpio_ archive based on _busybox(1)_ that
+contains many common *UNIX* utilities into a single small executable.
+
+For a more thorough description of *make(1)*, please refers to its manual.
+
+== OPTIONS
+
+**-h or --help**::
+	Print usage.
+
+== TARGETS ==
+
+**busybox**::
+	Compile a static version of *busybox(1)*.
+
+**initramfs.cpio**::
+	Create the _InitRAMFS_ _cpio_ archive to used with the _kernel_ image.
+
+**runqemu**::
+	Run the _kernel_ image and _userland_ rootfs in *qemu(1)*.
+
+== VARIABLES
+
+**QEMUFLAGS**::
+	Additional flags given to system _qemu_.
+
+**CMDLINE**::
+	Set the _kernel_ command-line.
+
+== EXAMPLES
+
+Run any traditional *make(1)* target from the _kernel_ as any _defconfig_ target
+
+	$ kmake tinyconfig
+
+\... or any _*config_ target
+
+	$ kmake menuconfig
+
+\... or the one to build the _kernel_ image
+
+	$ kmake
+
+\... and using command line variable such as increase verbosity level
+
+	$ kmake V=1
+
+Run the _kernel_ image alongside the _userland_ filesystem in *qemu(1)*
+
+	$ kmake runqemu
+
+Compile *busybox(1)*
+
+	$ kmake busybox
+
+Create *InitRAMFS* _cpio_ archive
+
+	$ kmake initramfs.cpio
+
+== BUGS
+
+Report bugs at *https://github.com/gazoo74/kmake/issues*
+
+== AUTHOR
+
+Written by Gaël PORTAY *gael.portay@savoirfairelinux.com*
+
+== COPYRIGHT
+
+Copyright (C) 2018 Savoir-Faire Linux Inc.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+== SEE ALSO
+
+*make(1)*, *busybox(1)*, *qemu(1)*
