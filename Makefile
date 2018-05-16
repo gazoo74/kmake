@@ -34,7 +34,7 @@ install:
 	sed -e 's,/usr/,$(PREFIX)/,' \
 	    -i $(DESTDIR)$(PREFIX)/bin/kmake
 	install -d $(DESTDIR)$(PREFIX)/share/kmake/
-	install -m 644 kmakefile *.mk inittab rcS \
+	install -m 644 kmakefile *.mk init inittab rcS \
 	           $(DESTDIR)$(PREFIX)/share/kmake/
 
 .PHONY: install-doc
