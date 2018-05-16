@@ -52,7 +52,7 @@ ramfs/etc/group: | ramfs/etc
 initramfs.cpio.gz:
 
 initramfs.cpio: | ramfs/proc ramfs/sys
-initramfs.cpio: ramfs/bin/busybox ramfs/dev/console
+initramfs.cpio: ramfs/bin/busybox ramfs/dev/console ramfs/init
 
 include init.mk
 
