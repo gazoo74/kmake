@@ -34,8 +34,8 @@ initramfs.cpio: ramfs
 ramfs ramfs/dev ramfs/proc ramfs/sys ramfs/etc ramfs/root:
 	mkdir -p $@
 
-ramfs/init ramfs/linuxrc:
-	ln -sf /bin/sh $@
+ramfs/init ramfs/linuxrc: $(KMINCDIR)/init
+	install -D -m 755 $< $@
 
 ramfs/dev/initrd: | ramfs/dev
 	fakeroot -i ramfs.env -s ramfs.env -- mknod -m 400 $@ b 1 250
