@@ -55,6 +55,10 @@ busybox_download:
 	head -n 1 | \
 	$(SHELL)
 
+.PHONY: busybox_source
+busybox_source:
+	git clone --single-branch git://git.busybox.net/busybox.git busybox
+
 ramfs/bin/busybox: busybox/busybox
 	$(MAKE) -C busybox install CONFIG_STATIC=y CONFIG_PREFIX=$(CURDIR)/ramfs/
 

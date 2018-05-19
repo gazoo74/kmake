@@ -40,6 +40,10 @@ linux_download:
 	sed -n '/<td id="latest_link"/,/<\/td>/s,.*<a.*href="\(.*\)">\(.*\)</a>.*,wget -qO- \1 | tar xvJ \&\& ln -sf linux-\2 linux,p' | \
 	$(SHELL)
 
+.PHONY: linux_source
+linux_source:
+	git clone --single-branch git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux
+
 linux_%:
 	@$(MAKE) $*
 
