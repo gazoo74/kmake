@@ -45,8 +45,7 @@ Here is a quick example to try [kmake(1)] on host.
 
 ### PREREQUISITES
 
-Fetch the [kernel] sources using the target `linux_download` from the in-tree
-_Makefile_
+Fetch the [kernel] sources using the target `linux_download` from [kmake(1)]
 
 	$ make linux_download
 	...

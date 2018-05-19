@@ -34,6 +34,12 @@ bzImage: arch/x86/boot/bzImage
 arch/x86/boot/bzImage: .config
 	$(MAKE) -f Makefile
 
+.SILENT: linux_download
+linux_download:
+	wget -qO- https://www.kernel.org/index.html | \
+	sed -n '/<td id="latest_link"/,/<\/td>/s,.*<a.*href="\(.*\)">\(.*\)</a>.*,wget -qO- \1 | tar xvJ \&\& ln -sf linux-\2 linux,p' | \
+	$(SHELL)
+
 linux_%:
 	@$(MAKE) $*
 
