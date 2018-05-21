@@ -23,6 +23,11 @@ all: _all
 
 include runqemu.mk
 
+-include Kmakefile
+.SILENT: Kmakefile
+Kmakefile:
+	echo "kmake: Use $@ to customize build." >&2
+
 %: MAKEFLAGS += --no-print-directory
 %:
 	@$(MAKE) $@
