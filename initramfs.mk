@@ -16,35 +16,35 @@ mrproper: initramfs_mrproper
 
 include busybox.mk
 
-initramfs.cpio: rootfs 
+$(obj)/initramfs.cpio: $(obj)/rootfs
 
-rootfs rootfs/dev rootfs/proc rootfs/sys rootfs/etc rootfs/root rootfs/tmp:
+$(obj)/rootfs $(obj)/rootfs/dev $(obj)/rootfs/proc $(obj)/rootfs/sys $(obj)/rootfs/etc $(obj)/rootfs/root $(obj)/rootfs/tmp:
 	mkdir -p $@
 
-rootfs/init rootfs/linuxrc: $(KMINCDIR)/init
+$(obj)/rootfs/init $(obj)/rootfs/linuxrc: $(KMINCDIR)/init
 	install -D -m 755 $< $@
 
-rootfs/dev/initrd: | rootfs/dev
+$(obj)/rootfs/dev/initrd: | $(obj)/rootfs/dev
 	fakeroot -i rootfs.env -s rootfs.env -- mknod -m 400 $@ b 1 250
 
-rootfs/dev/console: | rootfs/dev
+$(obj)/rootfs/dev/console: | $(obj)/rootfs/dev
 	fakeroot -i rootfs.env -s rootfs.env -- mknod -m 622 $@ c 5 1
 
-rootfs/etc/passwd: | rootfs/etc
+$(obj)/rootfs/etc/passwd: | $(obj)/rootfs/etc
 	echo "root::0:0:root:/root:/bin/sh" >$@
 
-rootfs/etc/group: | rootfs/etc
+$(obj)/rootfs/etc/group: | $(obj)/rootfs/etc
 	echo "root:x:0:root" >$@
 
-initramfs.cpio.gz:
+$(obj)/initramfs.cpio.gz:
 
-initramfs.cpio: | rootfs/proc rootfs/sys rootfs/tmp
-initramfs.cpio: rootfs/bin/busybox rootfs/dev/console rootfs/init
-initramfs.cpio: rootfs/lib/modules/$(shell $(MAKE) kernelversion)/modules.order
+$(obj)/initramfs.cpio: | $(obj)/rootfs/proc $(obj)/rootfs/sys $(obj)/rootfs/tmp
+$(obj)/initramfs.cpio: $(obj)/rootfs/bin/busybox $(obj)/rootfs/dev/console $(obj)/rootfs/init
+#$(obj)/initramfs.cpio: $(obj)/rootfs/lib/modules/$(shell $(MAKE) kernelversion)/modules.order
 
 include init.mk
 
-initramfs.cpio: rootfs/etc/passwd rootfs/etc/group | rootfs/root
+$(obj)/initramfs.cpio: $(obj)/rootfs/etc/passwd $(obj)/rootfs/etc/group | $(obj)/rootfs/root
 
 %.cpio:
 	cd $< && find . | \
@@ -54,10 +54,13 @@ initramfs.cpio: rootfs/etc/passwd rootfs/etc/group | rootfs/root
 %.gz: %
 	gzip -9 $*
 
+.PHONY: initramfs
+initramfs: $(obj)/initramfs.cpio
+
 .PHONY: initramfs_clean
 initramfs_clean:
-	rm -Rf rootfs/ rootfs.env
-	rm -f initramfs.cpio
+	rm -Rf $(obj)/rootfs/ $(obj)/rootfs.env
+	rm -f $(obj)/initramfs.cpio
 
 .PHONY: initramfs_mrproper
 initramfs_mrproper:

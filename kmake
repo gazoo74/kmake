@@ -52,12 +52,15 @@ parse_arguments() {
 		if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 			usage
 			exit 0
+		elif [[ $1 =~ ^O= ]]; then
+			KMAKE_OUTPUT="${1/O=/}"
+			export KMAKE_OUTPUT
 		fi
 		shift
 	done
 }
 
-# Intercept -h/--help option
+# Intercept -h/--help option and O= variable
 parse_arguments "$@"
 
 exec make "${kmake_flags[@]}" "$@"

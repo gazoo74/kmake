@@ -16,11 +16,11 @@ include kernel.mk
 .PHONY: runqemu
 runqemu:
 
-runqemu: KERNELFLAG=-kernel $(KBUILD_IMAGE)
-runqemu: $(KBUILD_IMAGE)
+runqemu: KERNELFLAG=-kernel $(obj)/$(KBUILD_IMAGE)
+runqemu: $(obj)/$(KBUILD_IMAGE)
 
-runqemu: INITRDFLAG=-initrd initramfs.cpio
-runqemu: initramfs.cpio
+runqemu: INITRDFLAG=-initrd $(obj)/initramfs.cpio
+runqemu: $(obj)/initramfs.cpio
 
 ifneq (,$(CMDLINE))
 runqemu: APPENDFLAG=-append "$(CMDLINE)"

@@ -8,15 +8,15 @@
 .PHONY: all
 all:
 
-initramfs.cpio: rootfs/etc/init.d/rcS rootfs/etc/inittab
+$(obj)/initramfs.cpio: $(obj)/rootfs/etc/init.d/rcS $(obj)/rootfs/etc/inittab
 
-rootfs/etc/init.d:
+$(obj)/rootfs/etc/init.d:
 	mkdir -p $@
 
-rootfs/etc/init.d/rcS: $(KMINCDIR)/rcS | rootfs/etc/init.d
+$(obj)/rootfs/etc/init.d/rcS: $(KMINCDIR)/rcS | $(obj)/rootfs/etc/init.d
 	install -D -m 755 $< $@
 
-rootfs/etc/inittab: $(KMINCDIR)/inittab | rootfs/etc
+$(obj)/rootfs/etc/inittab: $(KMINCDIR)/inittab | $(obj)/rootfs/etc
 	install -D -m 644 $< $@
 
 # ex: filetype=make

@@ -21,14 +21,14 @@ clean: busybox_clean
 mrproper: busybox_mrproper
 
 .PHONY: busybox
-busybox: busybox/busybox
+busybox: $(obj)/busybox/busybox
 
-.SILENT: busybox/busybox
-busybox/busybox: busybox/.config
+.SILENT: $(obj)/busybox/busybox
+$(obj)/busybox/busybox: $(obj)/busybox/.config
 	$(MAKE) -C busybox CONFIG_STATIC=y
 
-.SILENT: busybox/.config
-busybox/.config: busybox/Makefile
+.SILENT: $(obj)/busybox/.config
+$(obj)/busybox/.config: busybox/Makefile
 	yes "" | $(MAKE) -C busybox oldconfig
 
 .SILENT: busybox/Makefile
@@ -51,9 +51,9 @@ busybox_download:
 busybox_source:
 	git clone --single-branch git://git.busybox.net/busybox.git busybox
 
-.SILENT: rootfs/bin/busybox
-rootfs/bin/busybox: busybox/busybox
-	$(MAKE) -C busybox install CONFIG_STATIC=y CONFIG_PREFIX=$(CURDIR)/rootfs/
+.SILENT: $(obj)/rootfs/bin/busybox
+$(obj)/rootfs/bin/busybox: $(obj)/busybox/busybox
+	$(MAKE) -C busybox install CONFIG_STATIC=y CONFIG_PREFIX=$(CURDIR)/$(obj)/rootfs/
 
 .PHONY: busybox_clean
 busybox_clean:

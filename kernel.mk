@@ -18,12 +18,12 @@ include subarch.mk
 
 ifneq ($(KBUILD_IMAGE),)
 .SILENT: $(KBUILD_IMAGE)
-$(KBUILD_IMAGE): .config
+$(obj)/$(KBUILD_IMAGE): $(obj)/.config
 	$(MAKE) -f Makefile
 endif
 
 .SILENT: .config
-.config: | Makefile
+$(obj)/.config: | Makefile
 	echo "You need to configure your kernel!" >&2
 	exit 1
 
@@ -46,8 +46,9 @@ linux_download:
 linux_source:
 	git clone --single-branch git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux
 
-rootfs/lib/modules/%/modules.order: modules.order
+$(obj)/rootfs/lib/modules/%/modules.order: modules.order
 	$(MAKE) modules_install INSTALL_MOD_PATH=$(CURDIR)/$(firstword $(subst /, ,$(@D)))
+
 
 linux_%:
 	@$(MAKE) $*
