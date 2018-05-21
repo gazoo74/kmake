@@ -21,6 +21,9 @@
 .PHONY: all
 all: _all
 
+#.SILENT: _all
+#_all: MAKEFLAGS += --no-print-directory
+#
 include runqemu.mk
 
 -include Kmakefile

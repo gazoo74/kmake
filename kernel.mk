@@ -18,6 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+objtree	:= .
+obj	:= $(objtree)
+
+ifeq ("$(origin O)", "command line")
+obj := $(O)
+endif
+
 .PHONY: all
 all:
 
@@ -27,11 +34,11 @@ clean: linux_clean
 .PHONY: mrproper
 mrproper: linux_mrproper
 
-bzImage: arch/x86/boot/bzImage
+bzImage: $(obj)/arch/x86/boot/bzImage
 	cp $< $@
 
-.SILENT: arch/x86/boot/bzImage
-arch/x86/boot/bzImage: .config
+.SILENT: $(obj)/arch/x86/boot/bzImage
+$(obj)/arch/x86/boot/bzImage: $(obj)/.config
 	$(MAKE) -f Makefile
 
 .SILENT: linux_download

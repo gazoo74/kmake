@@ -31,32 +31,32 @@ include busybox.mk
 
 initramfs.cpio: ramfs
 
-ramfs ramfs/dev ramfs/proc ramfs/sys ramfs/etc ramfs/root:
+$(obj)/ramfs $(obj)/ramfs/dev $(obj)/ramfs/proc $(obj)/ramfs/sys $(obj)/ramfs/etc $(obj)/ramfs/root:
 	mkdir -p $@
 
-ramfs/init ramfs/linuxrc: $(KMINCDIR)/init
+$(obj)/ramfs/init $(obj)/ramfs/linuxrc: $(KMINCDIR)/init
 	install -D -m 755 $< $@
 
-ramfs/dev/initrd: | ramfs/dev
+$(obj)/ramfs/dev/initrd: | $(obj)/ramfs/dev
 	fakeroot -i ramfs.env -s ramfs.env -- mknod -m 400 $@ b 1 250
 
-ramfs/dev/console: | ramfs/dev
+$(obj)/ramfs/dev/console: | $(obj)/ramfs/dev
 	fakeroot -i ramfs.env -s ramfs.env -- mknod -m 622 $@ c 5 1
 
-ramfs/etc/passwd: | ramfs/etc
+$(obj)/ramfs/etc/passwd: | $(obj)/ramfs/etc
 	echo "root::0:0:root:/root:/bin/sh" >$@
 
-ramfs/etc/group: | ramfs/etc
+$(obj)/ramfs/etc/group: | $(obj)/ramfs/etc
 	echo "root:x:0:root" >$@
 
-initramfs.cpio.gz:
+$(obj)/initramfs.cpio.gz:
 
-initramfs.cpio: | ramfs/proc ramfs/sys
-initramfs.cpio: ramfs/bin/busybox ramfs/dev/console ramfs/init
+$(obj)/initramfs.cpio: | $(obj)/ramfs/proc $(obj)/ramfs/sys
+$(obj)/initramfs.cpio: $(obj)/ramfs/bin/busybox $(obj)/ramfs/dev/console $(obj)/ramfs/init
 
 include init.mk
 
-initramfs.cpio: ramfs/etc/passwd ramfs/etc/group | ramfs/root
+$(obj)/initramfs.cpio: $(obj)/ramfs/etc/passwd $(obj)/ramfs/etc/group | $(obj)/ramfs/root
 
 %.cpio:
 	cd $< && find . | \
@@ -68,7 +68,7 @@ initramfs.cpio: ramfs/etc/passwd ramfs/etc/group | ramfs/root
 
 .PHONY: initramfs_clean
 initramfs_clean:
-	rm -Rf ramfs/ ramfs.env
+	rm -Rf $(obj)/ramfs/ $(obj)/ramfs.env
 	rm -f initramfs.cpio
 
 .PHONY: initramfs_mrproper
