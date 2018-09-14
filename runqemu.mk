@@ -19,7 +19,7 @@
 #
 
 CMDLINE	?=
-QEMUFLAGS ?=
+QEMUFLAGS ?= -serial stdio
 
 .PHONY: all
 all:
@@ -35,10 +35,6 @@ runqemu: bzImage
 
 runqemu: INITRDFLAG=-initrd initramfs.cpio
 runqemu: initramfs.cpio
-
-ifneq (,$(CMDLINE))
-runqemu: APPENDFLAG=-append "$(CMDLINE)"
-endif
 
 runqemu: QEMUFLAGS?=-serial stdio
 runqemu:
