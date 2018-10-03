@@ -112,7 +112,7 @@ Enjoy!
 
 ## BUGS
 
-Report bugs at *https://github.com/gazoo74/kmake/issues*
+Report bugs at *https://github.com/gportay/kmake/issues*
 
 ## AUTHOR
 
