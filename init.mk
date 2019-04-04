@@ -32,4 +32,4 @@ ramfs/etc/init.d/rcS: $(KMINCDIR)/rcS | ramfs/etc/init.d
 ramfs/etc/inittab: $(KMINCDIR)/inittab | ramfs/etc
 	install -D -m 644 $< $@
 
-# ex: filetype=makefile
+# ex: filetype=make

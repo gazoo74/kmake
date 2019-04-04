@@ -44,4 +44,4 @@ runqemu: QEMUFLAGS?=-serial stdio
 runqemu:
 	qemu-system-$(shell uname -m) $(KERNELFLAG) $(INITRDFLAG) $(APPENDFLAG) $(QEMUFLAGS)
 
-# ex: filetype=makefile
+# ex: filetype=make

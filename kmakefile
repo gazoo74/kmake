@@ -32,4 +32,4 @@ Kmakefile:
 %:
 	@$(MAKE) $@
 
-# ex: filetype=makefile
+# ex: filetype=make

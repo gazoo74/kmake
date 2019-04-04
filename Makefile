@@ -86,4 +86,4 @@ mrproper: clean
 %.gz: %
 	gzip -c $^ >$@
 
-# ex: filetype=makefile
+# ex: filetype=make

@@ -74,4 +74,4 @@ initramfs_clean:
 .PHONY: initramfs_mrproper
 initramfs_mrproper:
 
-# ex: filetype=makefile
+# ex: filetype=make

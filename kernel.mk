@@ -47,4 +47,4 @@ linux_source:
 linux_%:
 	@$(MAKE) $*
 
-# ex: filetype=makefile
+# ex: filetype=make
