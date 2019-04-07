@@ -1,9 +1,6 @@
 #
 #  Copyright (C) 2018 Savoir-Faire Linux Inc.
 #
-#  Authors:
-#      Gaël PORTAY <gael.portay@savoirfairelinux.com>
-#
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
