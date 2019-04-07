@@ -17,7 +17,7 @@ include busybox.mk
 
 initramfs.cpio: ramfs
 
-ramfs ramfs/dev ramfs/proc ramfs/sys ramfs/etc ramfs/root:
+ramfs ramfs/dev ramfs/proc ramfs/sys ramfs/etc ramfs/root ramfs/tmp:
 	mkdir -p $@
 
 ramfs/init ramfs/linuxrc: $(KMINCDIR)/init
@@ -37,7 +37,7 @@ ramfs/etc/group: | ramfs/etc
 
 initramfs.cpio.gz:
 
-initramfs.cpio: | ramfs/proc ramfs/sys
+initramfs.cpio: | ramfs/proc ramfs/sys ramfs/tmp
 initramfs.cpio: ramfs/bin/busybox ramfs/dev/console ramfs/init
 
 include init.mk
