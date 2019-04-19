@@ -7,15 +7,15 @@
 .PHONY: all
 all:
 
-initramfs.cpio: ramfs/etc/init.d/rcS ramfs/etc/inittab
+initramfs.cpio: rootfs/etc/init.d/rcS rootfs/etc/inittab
 
-ramfs/etc/init.d:
+rootfs/etc/init.d:
 	mkdir -p $@
 
-ramfs/etc/init.d/rcS: $(KMINCDIR)/rcS | ramfs/etc/init.d
+rootfs/etc/init.d/rcS: $(KMINCDIR)/rcS | rootfs/etc/init.d
 	install -D -m 755 $< $@
 
-ramfs/etc/inittab: $(KMINCDIR)/inittab | ramfs/etc
+rootfs/etc/inittab: $(KMINCDIR)/inittab | rootfs/etc
 	install -D -m 644 $< $@
 
 # ex: filetype=make
