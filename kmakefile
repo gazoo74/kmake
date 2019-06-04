@@ -33,7 +33,11 @@ ifneq (,$(CMDLINE))
 runqemu: APPENDFLAG=-append "$(CMDLINE)"
 endif
 
-%: MAKEFLAGS += --no-print-directory
+-include Kmakefile
+.SILENT: Kmakefile
+Kmakefile:
+	echo "kmake: Use $@ to customize build." >&2
+
 %:
 	@$(MAKE) $@
 
