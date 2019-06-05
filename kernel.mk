@@ -23,7 +23,7 @@ $(KBUILD_IMAGE): .config
 endif
 
 .SILENT: .config
-.config: Makefile
+.config: | Makefile
 	echo "You need to configure your kernel!" >&2
 	exit 1
 
