@@ -1,5 +1,6 @@
 #
-#  Copyright (C) 2017-2018 Savoir-Faire Linux Inc.
+#  Copyright (C)      2019 Gaël PORTAY
+#                2017-2018 Savoir-Faire Linux Inc.
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
@@ -22,9 +23,11 @@ mrproper: busybox_mrproper
 .PHONY: busybox
 busybox: busybox/busybox
 
+.SILENT: busybox/busybox
 busybox/busybox: busybox/.config
 	$(MAKE) -C busybox CONFIG_STATIC=y
 
+.SILENT: busybox/.config
 busybox/.config: busybox/Makefile
 	yes "" | $(MAKE) -C busybox oldconfig
 
@@ -48,6 +51,7 @@ busybox_download:
 busybox_source:
 	git clone --single-branch git://git.busybox.net/busybox.git busybox
 
+.SILENT: rootfs/bin/busybox
 rootfs/bin/busybox: busybox/busybox
 	$(MAKE) -C busybox install CONFIG_STATIC=y CONFIG_PREFIX=$(CURDIR)/rootfs/
 
