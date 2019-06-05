@@ -14,12 +14,13 @@ clean: linux_clean
 .PHONY: mrproper
 mrproper: linux_mrproper
 
-bzImage: arch/x86/boot/bzImage
-	cp $< $@
+include subarch.mk
 
-.SILENT: arch/x86/boot/bzImage
-arch/x86/boot/bzImage: .config
+ifneq ($(KBUILD_IMAGE),)
+.SILENT: $(KBUILD_IMAGE)
+$(KBUILD_IMAGE): .config
 	$(MAKE) -f Makefile
+endif
 
 .SILENT: .config
 .config: Makefile

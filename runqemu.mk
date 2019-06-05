@@ -17,8 +17,8 @@ include kernel.mk
 .PHONY: runqemu
 runqemu:
 
-runqemu: KERNELFLAG=-kernel bzImage
-runqemu: bzImage
+runqemu: KERNELFLAG=-kernel $(KBUILD_IMAGE)
+runqemu: $(KBUILD_IMAGE)
 
 runqemu: INITRDFLAG=-initrd initramfs.cpio
 runqemu: initramfs.cpio
@@ -29,6 +29,6 @@ endif
 
 runqemu: QEMUFLAGS?=-serial stdio
 runqemu:
-	qemu-system-$(shell uname -m) $(KERNELFLAG) $(INITRDFLAG) $(APPENDFLAG) $(QEMUFLAGS)
+	qemu-system-$(MACHARCH) $(KERNELFLAG) $(INITRDFLAG) $(APPENDFLAG) $(QEMUFLAGS)
 
 # ex: filetype=make
