@@ -8,12 +8,12 @@
 .PHONY: all
 all: _all
 
-include runqemu.mk
-
 -include Kmakefile
 .SILENT: Kmakefile
 Kmakefile:
 	echo "kmake: Use $@ to customize build." >&2
+
+include runqemu.mk
 
 %: MAKEFLAGS += --no-print-directory
 %:
