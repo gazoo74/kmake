@@ -12,13 +12,14 @@
 # then ARCH is assigned, getting whatever value it gets normally, and
 # SUBARCH is subsequently ignored.
 
-SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/)
+SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
+				  -e s/aarch64.*/arm64/)
 
 # Cross compiling and selecting different set of gcc/bin-utils
 # ---------------------------------------------------------------------------
 #
 # When performing cross compilation for other architectures ARCH shall be set
-# to the target architecture. (Only x86 32/64bits are supported).
+# to the target architecture. (Only x86 32/64bits and arm64 are supported).
 # ARCH can be set during invocation of kmake:
 # kmake ARCH=i386
 # Another way is to have ARCH set in the environment.
@@ -45,4 +46,12 @@ ifeq ($(ARCH),x86_64)
 	SRCARCH := x86
 	MACHARCH := x86_64
 	KBUILD_IMAGE := arch/$(SRCARCH)/boot/bzImage
+endif
+
+# Additional ARCH settings for arm64
+ifeq ($(ARCH),arm64)
+	MACHARCH := aarch64
+	KBUILD_IMAGE := arch/$(SRCARCH)/boot/Image.gz
+	MACHINEFLAG ?= -cpu cortex-a57 -machine type=virt -smp 1 -m 8192
+	CMDLINE ?= console=ttyAMA0
 endif

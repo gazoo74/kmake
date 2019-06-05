@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
 
-CMDLINE	?=
 QEMUFLAGS ?=
 
 .PHONY: all
@@ -29,6 +28,6 @@ endif
 
 runqemu: QEMUFLAGS?=-serial stdio
 runqemu:
-	qemu-system-$(MACHARCH) $(KERNELFLAG) $(INITRDFLAG) $(APPENDFLAG) $(QEMUFLAGS)
+	qemu-system-$(MACHARCH) $(MACHINEFLAG) $(KERNELFLAG) $(INITRDFLAG) $(APPENDFLAG) $(QEMUFLAGS)
 
 # ex: filetype=make
