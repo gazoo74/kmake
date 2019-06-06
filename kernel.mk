@@ -46,6 +46,9 @@ linux_download:
 linux_source:
 	git clone --single-branch git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux
 
+rootfs/lib/modules/%/modules.order: modules.order
+	$(MAKE) modules_install INSTALL_MOD_PATH=$(CURDIR)/$(firstword $(subst /, ,$(@D)))
+
 linux_%:
 	@$(MAKE) $*
 

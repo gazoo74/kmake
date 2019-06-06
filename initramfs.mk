@@ -40,6 +40,7 @@ initramfs.cpio.gz:
 
 initramfs.cpio: | rootfs/proc rootfs/sys rootfs/tmp
 initramfs.cpio: rootfs/bin/busybox rootfs/dev/console rootfs/init
+initramfs.cpio: rootfs/lib/modules/$(shell $(MAKE) kernelversion)/modules.order
 
 include init.mk
 
