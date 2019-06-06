@@ -13,13 +13,14 @@
 # SUBARCH is subsequently ignored.
 
 SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
+				  -e s/arm.*/arm/ -e s/sa110/arm/ \
 				  -e s/aarch64.*/arm64/)
 
 # Cross compiling and selecting different set of gcc/bin-utils
 # ---------------------------------------------------------------------------
 #
 # When performing cross compilation for other architectures ARCH shall be set
-# to the target architecture. (Only x86 32/64bits and arm64 are supported).
+# to the target architecture. (Only x86 and ARM 32/64bits supported).
 # ARCH can be set during invocation of kmake:
 # kmake ARCH=i386
 # Another way is to have ARCH set in the environment.
@@ -48,7 +49,13 @@ ifeq ($(ARCH),x86_64)
 	KBUILD_IMAGE := arch/$(SRCARCH)/boot/bzImage
 endif
 
-# Additional ARCH settings for arm64
+# Additional ARCH settings for ARM
+ifeq ($(ARCH),arm)
+	MACHARCH := arm
+	KBUILD_IMAGE := arch/$(SRCARCH)/boot/zImage
+	MACHINEFLAG ?= -machine type=virt -smp 1 -m 8192
+	CMDLINE ?= console=ttyAMA0
+endif
 ifeq ($(ARCH),arm64)
 	MACHARCH := aarch64
 	KBUILD_IMAGE := arch/$(SRCARCH)/boot/Image.gz
