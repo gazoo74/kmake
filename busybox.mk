@@ -25,7 +25,7 @@ busybox: $(obj)/busybox/busybox
 
 .SILENT: $(obj)/busybox/busybox
 $(obj)/busybox/busybox: $(obj)/busybox/.config
-	$(MAKE) -C busybox CONFIG_STATIC=y
+	$(MAKE) -C busybox CONFIG_STATIC=y $(KMAKE_JOBS)
 
 .SILENT: $(obj)/busybox/.config
 $(obj)/busybox/.config: busybox/Makefile

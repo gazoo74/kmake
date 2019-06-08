@@ -19,7 +19,7 @@ include subarch.mk
 ifneq ($(KBUILD_IMAGE),)
 .SILENT: $(KBUILD_IMAGE)
 $(obj)/$(KBUILD_IMAGE): $(obj)/.config
-	$(MAKE) -f Makefile
+	$(MAKE) -f Makefile $(KMAKE_JOBS)
 endif
 
 .SILENT: .config

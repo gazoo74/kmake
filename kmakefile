@@ -8,6 +8,8 @@
 .PHONY: all
 all: _all
 
+.NOTPARALLEL:
+
 -include Kmakefile
 .SILENT: Kmakefile
 Kmakefile:

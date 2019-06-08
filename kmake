@@ -48,6 +48,9 @@ EOF
 }
 
 parse_arguments() {
+	local make_jobs
+	make_jobs=()
+	make_flags=()
 	while [ "$#" -ne 0 ]; do
 		if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 			usage
@@ -55,12 +58,32 @@ parse_arguments() {
 		elif [[ $1 =~ ^O= ]]; then
 			KMAKE_OUTPUT="${1/O=/}"
 			export KMAKE_OUTPUT
+			make_flags+=("$1")
+		elif [[ $1 =~ ^-j[0-9]*$ ]] || [[ $1 =~ ^--jobs(|=[0-9]*)$ ]]; then
+			case "$1" in
+			-j|--jobs)
+				make_jobs+=("$1")
+				if [[ $2 =~ ^[0-9]*$ ]]; then
+					shift
+					make_jobs+=("$1")
+				fi
+				;;
+			*)
+				make_jobs+=("$1")
+				;;
+			esac
+			echo make_jobs= "${make_jobs[@]}" >&2
+			echo \#make_jobs= "${#make_jobs[@]}" >&2
+			KMAKE_JOBS="${make_jobs[@]}"
+			export KMAKE_JOBS
+		else
+			make_flags+=("$1")
 		fi
 		shift
 	done
 }
 
-# Intercept -h/--help option and O= variable
+# Intercept -h/--help and -j/--jobs options and O= variable
 parse_arguments "$@"
 
-exec make "${kmake_flags[@]}" "$@"
+exec make "${kmake_flags[@]}" "${make_flags[@]}"
