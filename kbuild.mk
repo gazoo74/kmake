@@ -48,24 +48,4 @@ else
 abs_objtree := $(CURDIR)
 endif # ifneq ($(KBUILD_OUTPUT),)
 
-abs_srctree := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
-
-ifneq ($(words $(subst :, ,$(abs_srctree))), 1)
-$(error source directory cannot contain spaces or colons)
-endif
-
-ifeq ($(abs_srctree),$(abs_objtree))
-        # building in the source tree
-        srctree := .
-else
-        ifeq ($(abs_srctree)/,$(dir $(abs_objtree)))
-                # building in a subdirectory of the source tree
-                srctree := ..
-        else
-                srctree := $(abs_srctree)
-        endif
-endif
-
-objtree		:= .
-src		:= $(srctree)
-obj		:= $(objtree)
+obj		:= $(abs_objtree)

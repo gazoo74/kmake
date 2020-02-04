@@ -41,6 +41,7 @@ $(obj)/initramfs.cpio.gz:
 $(obj)/initramfs.cpio: | $(obj)/rootfs/proc $(obj)/rootfs/sys $(obj)/rootfs/tmp
 $(obj)/initramfs.cpio: $(obj)/rootfs/bin/busybox $(obj)/rootfs/dev/console $(obj)/rootfs/init
 #$(obj)/initramfs.cpio: $(obj)/rootfs/lib/modules/$(shell $(MAKE) kernelversion)/modules.order
+#modules: $(vmlinux-dirs) $(if $(KBUILD_BUILTIN),vmlinux) modules.builtin
 
 include init.mk
 

@@ -86,4 +86,5 @@ parse_arguments() {
 # Intercept -h/--help and -j/--jobs options and O= variable
 parse_arguments "$@"
 
+KMAKEFLAGS="${make_flags[@]}" \
 exec make "${kmake_flags[@]}" "${make_flags[@]}"

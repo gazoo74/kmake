@@ -16,6 +16,22 @@ mrproper: linux_mrproper
 
 include subarch.mk
 
+.PHONY: flags
+flags:
+	echo KMFLAGS: $(KMFLAGS)
+	echo KMAKEFLAGS: $(KMAKEFLAGS)
+	echo ---
+	echo MFLAGS: $(MFLAGS)
+	echo MAKEFLAGS: $(MAKEFLAGS)
+	echo MAKE_FLAGS: $(MAKE_FLAGS)
+	echo
+	echo $(filter $(KMAKEFLAGS),$(MAKEFLAGS))
+	echo $(filter-out $(KMAKEFLAGS),$(MAKEFLAGS))
+	echo $(filter $(KMFLAGS),$(MFLAGS))
+	echo $(filter-out $(KMFLAGS),$(MFLAGS))
+	echo $(MAKE) -f Makefile
+	echo KBUILD_IMAGE: $(KBUILD_IMAGE)
+
 ifneq ($(KBUILD_IMAGE),)
 .SILENT: $(KBUILD_IMAGE)
 $(obj)/$(KBUILD_IMAGE): $(obj)/.config
@@ -35,6 +51,17 @@ Makefile:
 	echo "or" >&2
 	echo "$$ $(MAKE) $(@D)_download" >&2
 	exit 1
+
+ifneq ($(xxxKBUILD_IMAGE),)
+$(xxxKCONFIG_CONFIG):
+	@echo >&2 '***'
+	@echo >&2 '*** Configuration file "$@" not found!'
+	@echo >&2 '***'
+	@echo >&2 '*** Please run some configurator (e.g. "make oldconfig" or'
+	@echo >&2 '*** "make menuconfig" or "make xconfig").'
+	@echo >&2 '***'
+	@/bin/false
+endif
 
 .SILENT: linux_download
 linux_download:
